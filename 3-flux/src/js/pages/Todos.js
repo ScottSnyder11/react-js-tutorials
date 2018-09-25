@@ -4,18 +4,18 @@ import Todo from "../components/Todo";
 import * as TodoActions from "../actions/TodoActions";
 import TodoStore from "../stores/TodoStore";
 
-
 export default class Todos extends React.Component {
   constructor() {
     super();
     this.getTodos = this.getTodos.bind(this);
     this.state = {
-      todos: TodoStore.getAll(),
+      todos: TodoStore.getAll()
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     TodoStore.on("change", this.getTodos);
+    console.log("count", TodoStore.listenerCount("change"));
   }
 
   componentWillUnmount() {
@@ -24,7 +24,7 @@ export default class Todos extends React.Component {
 
   getTodos() {
     this.setState({
-      todos: TodoStore.getAll(),
+      todos: TodoStore.getAll()
     });
   }
 
@@ -36,7 +36,7 @@ export default class Todos extends React.Component {
     const { todos } = this.state;
 
     const TodoComponents = todos.map((todo) => {
-        return <Todo key={todo.id} {...todo}/>;
+      return <Todo key={todo.id} {...todo}/>;
     });
 
     return (
@@ -48,3 +48,4 @@ export default class Todos extends React.Component {
     );
   }
 }
+
