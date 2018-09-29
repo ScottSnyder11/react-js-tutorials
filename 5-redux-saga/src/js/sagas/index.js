@@ -3,8 +3,7 @@ import * as tweetsActions from '../actions/tweetsActions'
 import * as userActions from '../actions/userActions'
 import axios from "axios";
 
-//const fetchTweetsApi = () => axios.get('http://localhost:18080');
-const fetchTweetsApi = () => axios.get('http://rest.learncode.academy/api/reacttest/tweets');
+const fetchTweetsApi = () => axios.get('http://localhost:18080');
 
 function* watchFetchTweets() {
   yield takeEvery("FETCH_TWEETS", fetchTweets);
