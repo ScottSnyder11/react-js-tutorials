@@ -1,5 +1,4 @@
 import React from "react";
-
 import Article from "../components/Article";
 
 export default class Featured extends React.Component {
@@ -16,18 +15,18 @@ export default class Featured extends React.Component {
       "Some Article",
       "Some Other Article",
       "Yet Another Article",
-      "Still More",
-    ].map((title, i) => <Article key={i} title={title}/> );
+      "Still More"
+    ].map((title, i) => <Article key={i} title={title} />);
 
     const adText = [
       "Ad spot #1",
       "Ad spot #2",
       "Ad spot #3",
       "Ad spot #4",
-      "Ad spot #5",
+      "Ad spot #5"
     ];
 
-    const randomAd = adText[Math.round( Math.random() * (adText.length-1) )];
+    const randomAd = adText[Math.round(Math.random() * (adText.length - 1))];
     console.log("featured");
     return (
       <div>
@@ -38,7 +37,6 @@ export default class Featured extends React.Component {
             </div>
           </div>
         </div>
-
         <div class="row">{Articles}</div>
       </div>
     );

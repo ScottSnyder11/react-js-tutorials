@@ -4,26 +4,34 @@ var path = require('path');
 
 module.exports = {
   context: path.join(__dirname, "src"),
-  devtool: debug ? "inline-sourcemap" : null,
   entry: "./js/main.js",
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      use: [{
         loader: 'babel-loader',
-        query: { presets: ['es2015', 'react'], plugins: ["transform-decorators-legacy", "transform-class-properties"] }
-      },
-      { test: /\.css$/, loader: "style-loader!css-loader" },
-    ]
+        options: {
+          plugins: [
+            'react-html-attrs',
+            ['@babel/plugin-proposal-decorators', {legacy: true}],
+            ["@babel/plugin-proposal-class-properties", { loose: true }]
+          ],
+          presets: ['@babel/preset-react', '@babel/preset-env']
+        }
+      }]
+    },
+    {
+      test: /\.css$/,
+      loader: "style-loader!css-loader"
+    }]
   },
   output: {
     path: path.join(__dirname, "src"),
     filename: "main.min.js"
   },
   plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
   ],
 };

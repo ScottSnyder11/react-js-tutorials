@@ -1,31 +1,40 @@
-var debug = process.env.NODE_ENV !== "production";
+var debug   = process.env.NODE_ENV !== "production";
 var webpack = require('webpack');
-var path = require('path');
+var path    = require('path');
 
 module.exports = {
   context: path.join(__dirname, "src"),
-  devtool: debug ? "inline-sourcemap" : null,
-  entry: "./js/client.js",
+  /* devtool: debug ? "inline-sourcemap" : false, */
+  entry: ["@babel/polyfill", "./js/client.js"],
   module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      use: [{
         loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015', 'stage-0'],
-          plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
+        options: {
+          plugins: ['react-html-attrs'],
+          presets: ['@babel/preset-react', '@babel/preset-env']
         }
-      }
-    ]
+      }]
+    }]
   },
   output: {
     path: __dirname + "/src/",
-    filename: "client.min.js"
+    filename: "client.min.js",
+    publicPath: '/'
+  },
+  devServer: {
+    historyApiFallback: true
   },
   plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    /* Search for equal or similar files and deduplicate them in the output. */
+    // new webpack.optimize.DedupePlugin(), /* It has been removed since Webpack 2 */
+    /* Assign the module nad chunk ids by occurrence count.
+       Ids that are used often get lower (shorter) ids.
+       This make ids predictable reduces total file size and is recommended. */
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    /* UglifyJS Webpack Plugin */
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
   ],
 };
